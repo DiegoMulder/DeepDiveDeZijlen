@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 public class MainMenu : MonoBehaviour
 {
-    public GameObject mainMenuPanel, startNieuwPanel, playerDataPanel;
+    public GameObject mainMenuPanel, startNieuwPanel, playerDataPanel, meerInfoPanel;
     public TMP_InputField voorNaam, achterNaam;
     public Button startButton;
     public KaartManager kaartManager;
@@ -55,6 +55,8 @@ public class MainMenu : MonoBehaviour
     public void OnPlayerData() => playerDataPanel.SetActive(true);
 
     public void OffPlayerData() => playerDataPanel.SetActive(false);
+
+    public void OffMeerInfo() => meerInfoPanel.SetActive(false);
 
     // Valideert een naam: moet niet leeg zijn en alleen letters bevatten
     private bool IsValidName(string input)

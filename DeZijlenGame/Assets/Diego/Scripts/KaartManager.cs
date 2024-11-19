@@ -17,6 +17,9 @@ public class KaartManager : MonoBehaviour
 {
     public GameObject kaartPrefab; // Prefab voor een kaartje
     public Transform content; // Content object binnen Scroll View
+    public GameObject meerInfoPanel; // Het algemene informatiepaneel
+    public TMP_Text voornaamInfoText; // Text component voor voornaam
+    public TMP_Text achternaamInfoText; // Text component voor achternaam
     private List<KaartData> kaartLijst = new List<KaartData>(); // De lijst van kaartjes
     private string savePath;
 
@@ -30,6 +33,9 @@ public class KaartManager : MonoBehaviour
 
         // Laad de kaartjes bij het opstarten
         LaadKaartjes();
+
+        // Zorg ervoor dat het panel niet zichtbaar is bij het starten
+        meerInfoPanel.SetActive(false);
     }
 
     // Voeg een nieuw kaartje toe aan de lijst en de UI
@@ -75,6 +81,25 @@ public class KaartManager : MonoBehaviour
             // Sla de gewijzigde lijst op
             SlaKaartjesOp();
         });
+
+        // Voeg functionaliteit toe aan de MeerInfo-knop
+        Button meerInfoButton = nieuwKaartje.transform.Find("MeerInfoButton").GetComponent<Button>();
+        meerInfoButton.onClick.AddListener(() =>
+        {
+            // Toon het informatiepaneel met de gegevens van deze specifieke persoon
+            ToonMeerInfo(kaartData);
+        });
+    }
+
+    // Toon het paneel met de specifieke gegevens van de geselecteerde persoon
+    private void ToonMeerInfo(KaartData kaartData)
+    {
+        // Vul de tekstcomponenten met de gegevens van de persoon
+        voornaamInfoText.text = "Voornaam: " + kaartData.voornaam;
+        achternaamInfoText.text = "Achternaam: " + kaartData.achternaam;
+
+        // Maak het panel zichtbaar
+        meerInfoPanel.SetActive(true);
     }
 
     public void SlaKaartjesOp()
