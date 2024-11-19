@@ -4,42 +4,49 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System.Text.RegularExpressions;
 
 public class MainMenu : MonoBehaviour
 {
     public GameObject mainMenuPanel, startNieuwPanel, playerDataPanel;
     public TMP_InputField voorNaam, achterNaam;
     public Button startButton;
-    public KaartManager kaartManager; // Referentie naar KaartManager
+    public KaartManager kaartManager;
 
     void Start()
     {
-        startButton.interactable = false;
+        startButton.interactable = false; // Knop begint inactief
     }
 
     void Update()
     {
-        // Activeer de knop alleen als velden zijn ingevuld
-        startButton.interactable = !string.IsNullOrEmpty(voorNaam.text) && !string.IsNullOrEmpty(achterNaam.text);
+        // Controleer invoer en activeer de knop alleen als de namen geldig zijn
+        startButton.interactable = IsValidName(voorNaam.text) && IsValidName(achterNaam.text);
     }
 
     public void StartBehaviour()
     {
+        if (kaartManager == null)
+        {
+            Debug.LogError("KaartManager is niet ingesteld in de Inspector.");
+            return;
+        }
+
+        if (string.IsNullOrEmpty(voorNaam.text) || string.IsNullOrEmpty(achterNaam.text))
+        {
+            Debug.LogError("Voornaam of Achternaam is leeg.");
+            return;
+        }
+
         string voornaam = voorNaam.text;
         string achternaam = achterNaam.text;
 
-        // Voeg een nieuw kaartje toe via KaartManager
-        if (kaartManager != null)
-        {
-            kaartManager.VoegNieuwKaartjeToe(voornaam, achternaam);
-        }
+        Debug.Log($"Kaartje toevoegen: Voornaam={voornaam}, Achternaam={achternaam}");
+        kaartManager.VoegNieuwKaartjeToe(voornaam, achternaam);
 
-        // Scene wisselen
-        Debug.Log("Switching to the next scene...");
-        SceneManager.LoadScene(1); // Controleer of "1" de juiste index is in Build Settings
+        Debug.Log("Scenewissel wordt aangeroepen.");
+        SceneManager.LoadScene(1);
     }
-
-
 
     public void OnStartNieuw() => startNieuwPanel.SetActive(true);
 
@@ -48,4 +55,10 @@ public class MainMenu : MonoBehaviour
     public void OnPlayerData() => playerDataPanel.SetActive(true);
 
     public void OffPlayerData() => playerDataPanel.SetActive(false);
+
+    // Valideert een naam: moet niet leeg zijn en alleen letters bevatten
+    private bool IsValidName(string input)
+    {
+        return !string.IsNullOrEmpty(input) && Regex.IsMatch(input, @"^[a-zA-Z]+$");
+    }
 }

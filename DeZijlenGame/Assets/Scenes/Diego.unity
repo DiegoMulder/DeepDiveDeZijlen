@@ -757,7 +757,6 @@ GameObject:
   - component: {fileID: 328449289}
   - component: {fileID: 328449288}
   - component: {fileID: 328449287}
-  - component: {fileID: 328449290}
   m_Layer: 5
   m_Name: Scroll View
   m_TagString: Untagged
@@ -855,21 +854,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 328449285}
   m_CullTransparentMesh: 1
---- !u!114 &328449290
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 328449285}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a50ca38c89482744bf6ef55a96000b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  kaartPrefab: {fileID: 9108527468059157276, guid: 8bbde00992adeba4db494da61ff8a951,
-    type: 3}
-  content: {fileID: 1496177378}
 --- !u!1 &419131659
 GameObject:
   m_ObjectHideFlags: 0
@@ -1129,6 +1113,7 @@ GameObject:
   - component: {fileID: 537630496}
   - component: {fileID: 537630495}
   - component: {fileID: 537630499}
+  - component: {fileID: 537630500}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1239,7 +1224,22 @@ MonoBehaviour:
   voorNaam: {fileID: 156857861}
   achterNaam: {fileID: 2127439098}
   startButton: {fileID: 429180834}
-  kaartManager: {fileID: 328449290}
+  kaartManager: {fileID: 537630500}
+--- !u!114 &537630500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 537630494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a50ca38c89482744bf6ef55a96000b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  kaartPrefab: {fileID: 9108527468059157276, guid: 8bbde00992adeba4db494da61ff8a951,
+    type: 3}
+  content: {fileID: 1496177378}
 --- !u!1 &598688886
 GameObject:
   m_ObjectHideFlags: 0
