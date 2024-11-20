@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Mand1
+  - Mand2
+  - Mand3
+  - RedCube
+  - BlueCube
+  - GreenCube
   layers:
   - Default
   - TransparentFX
