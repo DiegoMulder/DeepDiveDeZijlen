@@ -65,8 +65,8 @@ public class KaartManager : MonoBehaviour
         GameObject nieuwKaartje = Instantiate(kaartPrefab, content);
 
         // Update de tekst van de UI-elementen
-        nieuwKaartje.transform.Find("VoornaamText").GetComponent<TMP_Text>().text = kaartData.voornaam;
-        nieuwKaartje.transform.Find("AchternaamText").GetComponent<TMP_Text>().text = kaartData.achternaam;
+        nieuwKaartje.transform.Find("NaamText").GetComponent<TMP_Text>().text = kaartData.voornaam + " " + kaartData.achternaam;
+        //nieuwKaartje.transform.Find("AchternaamText").GetComponent<TMP_Text>().text = kaartData.achternaam;
         nieuwKaartje.transform.Find("OpdrachtenText").GetComponent<TMP_Text>().text =
             $"{kaartData.opdrachtenGedaan}/{kaartData.maxOpdrachten}";
 
