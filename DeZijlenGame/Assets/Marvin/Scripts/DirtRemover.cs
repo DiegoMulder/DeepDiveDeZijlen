@@ -21,7 +21,7 @@ public class DirtRemover : MonoBehaviour
         }
     }
 
-    private void RemoveDirt(GameObject dirt)
+    private void RemoveGameObject(GameObject dirt)
     {
         if (targets.Contains(dirt))
         {
