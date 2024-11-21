@@ -2,12 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainMenuScript : MonoBehaviour
 {
     public GameObject mainMenu;
     public GameObject gameSelector;
     public GameObject optionsMenu;
+
+    public void SceneLoader(int ID) => SceneManager.LoadScene(ID);
 
     public void StartButton()
     {
