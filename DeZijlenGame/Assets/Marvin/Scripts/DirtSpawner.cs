@@ -3,18 +3,18 @@ using UnityEngine;
 
 public class DirtSpawner : MonoBehaviour
 {
-    public GameObject dirtPrefab;
-    public List<Transform> spawnPoints;
-    public int numberOfDirtToSpawn = 5;
+    public GameObject dirtPrefab, leavesPrefab;
+    public  List<GameObject> dirtSpawnPoints, leavesSpawnPoints;
+    public int numberOfDirtToSpawn = 5, numbersOfLeavesToSpawn = 5;
 
     void Start()
     {
-        SpawnDirtObjects();
+        SpawnObjects();
     }
 
-    private void SpawnDirtObjects()
+    private void SpawnObjects()
     {
-        if (dirtPrefab == null || spawnPoints == null || spawnPoints.Count == 0)
+        if (leavesSpawnPoints.Count == 0 || leavesSpawnPoints == null || leavesPrefab == null || dirtPrefab == null || dirtSpawnPoints == null || dirtSpawnPoints.Count == 0)
         {
             Debug.LogWarning("Zorg ervoor dat je een prefab en spawnpunten hebt toegewezen!");
             return;
@@ -22,18 +22,34 @@ public class DirtSpawner : MonoBehaviour
 
         for (int i = 0; i < numberOfDirtToSpawn; i++)
         {
-            if (spawnPoints.Count == 0)
+            if (dirtSpawnPoints.Count == 0)
             {
                 Debug.LogWarning("Geen spawnpunten meer beschikbaar!");
                 break;
             }
 
-            int randomIndex = Random.Range(0, spawnPoints.Count);
-            Transform spawnPoint = spawnPoints[randomIndex];
+            int randomIndex = Random.Range(0, dirtSpawnPoints.Count);
+            GameObject spawnPoint = dirtSpawnPoints[randomIndex];
 
-            Instantiate(dirtPrefab, spawnPoint.position, spawnPoint.rotation);
+            Instantiate(dirtPrefab, spawnPoint.transform.position, spawnPoint.transform.rotation);
 
-            spawnPoints.RemoveAt(randomIndex);
+            dirtSpawnPoints.RemoveAt(randomIndex);
+        }
+
+        for (int i = 0; i < numbersOfLeavesToSpawn; i++)
+        {
+            if (leavesSpawnPoints.Count == 0)
+            {
+                Debug.LogWarning("Geen spawnpunten meer beschikbaar!");
+                break;
+            }
+
+            int randomIndex = Random.Range(0, leavesSpawnPoints.Count);
+            GameObject spawnPoint = leavesSpawnPoints[randomIndex];
+
+            Instantiate(leavesPrefab, spawnPoint.transform.position, spawnPoint.transform.rotation);
+
+            leavesSpawnPoints.RemoveAt(randomIndex);
         }
     }
 }

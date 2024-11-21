@@ -1,11 +1,14 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class DirtRemover : MonoBehaviour
 {
-    public int requiredSweeps = 3; // Hoeveel keer de bezem moet langskomen
-    private int currentSweeps = 0;
+    public GameObject tempDirt, leaves;
 
-    // Functie die aangeroepen wordt wanneer de bezem de dirt raakt
+    public int requiredSweeps = 3;
+    private int currentSweeps = 0;
+    public List<GameObject> targets;
+
     public void Sweep()
     {
         currentSweeps++;
@@ -13,28 +16,26 @@ public class DirtRemover : MonoBehaviour
 
         if (currentSweeps >= requiredSweeps)
         {
-            RemoveDirt();
+            Destroy(tempDirt.gameObject);
+            currentSweeps = 0;
         }
     }
 
-    private void RemoveDirt()
+    private void RemoveDirt(GameObject dirt)
     {
-        Debug.Log("Dirt removed!");
-        Destroy(gameObject); // Verwijdert het dirt-object uit de scene
+        if (targets.Contains(dirt))
+        {
+            targets.Remove(dirt);
+            Debug.Log($"Dirt removed from list. Remaining dirt: {targets.Count}");
+        }
     }
-}
-
-public class Broom : MonoBehaviour
-{
     private void OnTriggerEnter(Collider other)
     {
+        tempDirt = other.gameObject;
         if (other.CompareTag("Dirt"))
         {
-            DirtRemover dirt = other.GetComponent<DirtRemover>();
-            if (dirt != null)
-            {
-                dirt.Sweep(); // Roept de Sweep-functie aan op het dirt-object
-            }
+            print("test");
+            Sweep();
         }
     }
 }
