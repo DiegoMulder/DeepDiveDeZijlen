@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class DirtRemover : MonoBehaviour
 {
-    public GameObject tempDirt, leaves;
+    public GameObject tempGameObject;
 
     public int requiredSweeps = 3;
     private int currentSweeps = 0;
@@ -16,7 +16,7 @@ public class DirtRemover : MonoBehaviour
 
         if (currentSweeps >= requiredSweeps)
         {
-            Destroy(tempDirt.gameObject);
+            Destroy(tempGameObject.gameObject);
             currentSweeps = 0;
         }
     }
@@ -31,7 +31,7 @@ public class DirtRemover : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        tempDirt = other.gameObject;
+        tempGameObject = other.gameObject;
         if (other.CompareTag("Dirt"))
         {
             print("test");
