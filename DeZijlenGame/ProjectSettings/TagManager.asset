@@ -10,6 +10,7 @@ TagManager:
   - RedCube
   - BlueCube
   - GreenCube
+  - Dirt
   layers:
   - Default
   - TransparentFX
