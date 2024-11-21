@@ -1,5 +1,6 @@
 using UnityEngine;
-using UnityEngine.UI; // For working with UI elements
+using UnityEngine.UI;
+using UnityEngine.XR;
 using System.Collections.Generic;
 
 public class PhotoCamera : MonoBehaviour
@@ -7,7 +8,6 @@ public class PhotoCamera : MonoBehaviour
     public Camera photoCamera;               // The camera used for taking photos
     public RenderTexture photoTexture;       // Render Texture to hold the photo
     public Renderer cameraScreen;            // Renderer for the camera's screen display
-    public KeyCode takePhotoKey = KeyCode.Space; // Key to take a photo
 
     public List<Transform> targetObjects;    // List of objects to capture
     public List<string> targetDescriptions;  // Descriptions for each object
@@ -16,6 +16,8 @@ public class PhotoCamera : MonoBehaviour
     private int currentTargetIndex = 0;      // Index of the current target in the list
 
     private Texture2D capturedPhoto;         // Texture to save the captured image
+    private InputDevice rightController;     // Reference to the right-hand controller
+    private bool canTakePhoto = true;        // Cooldown flag to control photo-taking
 
     void Start()
     {
@@ -36,14 +38,43 @@ public class PhotoCamera : MonoBehaviour
             Debug.LogError("UI Text not assigned!");
         }
 
+        // Find the right-hand controller
+        List<InputDevice> devices = new List<InputDevice>();
+        InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.Right | InputDeviceCharacteristics.Controller, devices);
+
+        if (devices.Count > 0)
+        {
+            rightController = devices[0];
+            Debug.Log("Right controller found.");
+        }
+        else
+        {
+            Debug.LogError("No right controller found!");
+        }
+
         UpdateUIText();
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(takePhotoKey))
+        if (rightController.isValid)
         {
-            TakePhoto();
+            // Check if the trigger button is pressed
+            if (rightController.TryGetFeatureValue(CommonUsages.triggerButton, out bool isPressed) && isPressed && canTakePhoto)
+            {
+                TakePhoto();
+            }
+        }
+        else
+        {
+            // Try to reinitialize the controller if it's lost
+            List<InputDevice> devices = new List<InputDevice>();
+            InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.Right | InputDeviceCharacteristics.Controller, devices);
+
+            if (devices.Count > 0)
+            {
+                rightController = devices[0];
+            }
         }
     }
 
@@ -54,6 +85,10 @@ public class PhotoCamera : MonoBehaviour
             Debug.Log("All targets have been captured!");
             return;
         }
+
+        // Start cooldown
+        canTakePhoto = false;
+        Invoke(nameof(ResetPhotoCooldown), 1f);
 
         // Save the current RenderTexture to a Texture2D
         RenderTexture.active = photoTexture;
@@ -80,7 +115,7 @@ public class PhotoCamera : MonoBehaviour
             else
             {
                 // All targets captured
-                uiText.text = "Je hebt overal een foto van gemaakt!";
+                uiText.text = "Je hebt van alles een foto gemaakt!";
                 Invoke("ClearUIText", 3f); // Clear the text after 3 seconds
             }
         }
@@ -88,6 +123,11 @@ public class PhotoCamera : MonoBehaviour
         {
             Debug.Log("Target not in photo or obstructed. Try again!");
         }
+    }
+
+    void ResetPhotoCooldown()
+    {
+        canTakePhoto = true;
     }
 
     bool IsTargetPartiallyInPhoto(Transform targetObject)
@@ -124,11 +164,7 @@ public class PhotoCamera : MonoBehaviour
                 viewportPosition.x > 0 && viewportPosition.x < 1 && // Horizontal bounds
                 viewportPosition.y > 0 && viewportPosition.y < 1)   // Vertical bounds
             {
-                // Perform a raycast to ensure there's no obstruction
-                if (!IsCornerObstructed(corner))
-                {
-                    visibleCorners++;
-                }
+                visibleCorners++;
             }
         }
 
@@ -137,26 +173,6 @@ public class PhotoCamera : MonoBehaviour
 
         // Check if the visibility meets the threshold
         return visibility >= visibleThreshold;
-    }
-
-    bool IsCornerObstructed(Vector3 corner)
-    {
-        Vector3 cameraPosition = photoCamera.transform.position;
-        Vector3 direction = corner - cameraPosition;
-        float distance = Vector3.Distance(cameraPosition, corner);
-
-        // Perform a raycast from the camera to the corner
-        if (Physics.Raycast(cameraPosition, direction, out RaycastHit hit, distance))
-        {
-            // Check if the object hit by the raycast is the target
-            if (hit.transform != targetObjects[currentTargetIndex])
-            {
-                Debug.Log($"Obstruction detected: {hit.transform.name}");
-                return true; // Corner is obstructed
-            }
-        }
-
-        return false; // No obstruction
     }
 
     void UpdateUIText()

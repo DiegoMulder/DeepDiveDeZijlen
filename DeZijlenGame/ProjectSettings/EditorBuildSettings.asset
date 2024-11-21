@@ -8,6 +8,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Marshall/Scene/MainMenu.unity
+    guid: 09764a5f5fd9ebd4d9660cbcbb58b935
+  - enabled: 1
+    path: Assets/Scenes/Imre/ImreTest.unity
+    guid: 43595c750c01eb649a0908064f6c4808
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 676d8a9f88c9284418f6502216beadfc,
       type: 2}
