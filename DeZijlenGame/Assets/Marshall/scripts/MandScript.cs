@@ -14,11 +14,11 @@ public class MandController : MonoBehaviour
     {
         if (other.CompareTag(juisteCubeTag))
         {
-            Debug.Log("Correct!" + other.tag + "is in " + gameObject.tag);
+            Debug.Log($"Correct! {other.tag} is in {gameObject.tag}");
         }
         else
         {
-            Debug.Log("Fout! " + other.tag + "hoort niet in " + gameObject.tag);
+            Debug.Log($"Fout! {other.tag} hoort niet in {gameObject.tag}");
             Transform teleportLocation = GetTeleportLocation(other.tag);
 
             if (teleportLocation != null)
