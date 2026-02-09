@@ -12,6 +12,7 @@ public class DirtSpawner : MonoBehaviour
         SpawnObjects();
     }
 
+    /// <summary> Deze functie spawnt de opgegeven hoeveelheid vuil en bladeren op willekeurige spawnpunten. Zorg ervoor dat je voldoende spawnpunten hebt toegewezen in de Inspector! </summary>
     private void SpawnObjects()
     {
         if (leavesSpawnPoints.Count == 0 || leavesSpawnPoints == null || leavesPrefab == null || dirtPrefab == null || dirtSpawnPoints == null || dirtSpawnPoints.Count == 0)
